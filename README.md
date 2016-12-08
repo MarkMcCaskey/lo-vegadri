@@ -1,6 +1,6 @@
-# Lenjo 
+# lo tegadri
 
-[![Build Status](https://travis-ci.com/MarkMcCaskey/lenjo.svg?token=JRN5sRswefsvVxT2unVR&branch=master)](https://travis-ci.com/MarkMcCaskey/lenjo)
+[![Build Status](https://travis-ci.com/MarkMcCaskey/lo-tegadri.svg?token=JRN5sRswefsvVxT2unVR&branch=master)](https://travis-ci.com/MarkMcCaskey/lo-tegadri)
 
 WARNING: this project is in early development and is likely unsafe and broken.  Expect bugs.  Contributions welcome.
 
@@ -25,8 +25,8 @@ You will need [[stack](https://docs.haskellstack.org/en/stable/README/)] to buil
 
 To install the project:
 ```
-git clone https://github.com/MarkMcCaskey/lenjo
-cd lenjo
+git clone https://github.com/MarkMcCaskey/lo-tegadri
+cd lo-tegadri
 stack setup
 stack install
 ```
