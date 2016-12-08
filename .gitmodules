@@ -1,3 +1,6 @@
 [submodule "src/Datalog"]
 	path = src/Datalog
 	url = https://github.com/markmccaskey/datalog
+[submodule "src/dictionaries"]
+	path = src/dictionaries
+	url = https://github.com/MarkMcCaskey/dictionaries

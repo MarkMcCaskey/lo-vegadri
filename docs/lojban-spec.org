@@ -410,12 +410,6 @@
      + Non-reduced fractions must be quoted and are not of Mekso type
        
 
-**** TODO Complex
-**** TODO Special
-     For now this includes:
-     * infinity
-     * elliptical values (i.e. 0.34... or ...123)
-     * Degrees?
 **** TODO Radix/Bases
 *** TODO Boolean
 **** TODO Truth

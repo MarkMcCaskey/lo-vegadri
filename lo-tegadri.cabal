@@ -4,7 +4,7 @@ synopsis:            Semantic Lojban "standardization" attempt and implementatio
 description:         Please see README.md
 homepage:            https://github.com/MarkMcCaskey/lo-tegadri
 license:             BSD3
-license-file:        LICENSE
+license-file:        LICENSE/BSD3
 author:              Mark McCaskey
 maintainer:          mmccask2@gmu.edu
 copyright:           2016 Mark McCaskey

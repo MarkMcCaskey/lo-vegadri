@@ -17,7 +17,9 @@ import Language.Lojban.Jboi.CSTtoAST
 import Development.IncludeFile
 import qualified Data.ByteString as BS
 
-$(includeFileInSource "app/jboi/Lojban_logo.txt" "logo")
+$(includeFileInSource "data/Lojban_logo.txt" "logo")
+$(includeFileInSource "data/jbo-eng.idx" "jeIdx")
+$(includeFileInSource "data/jbo-eng.ifo" "jeIfo")
 
 type Repl a = HaskelineT IO a
 
