@@ -12,7 +12,7 @@ An implementation of a semantic Lojban standard (currently unnamed).
 
 This project is unofficial and is not affiliated with the LLG.
 
-[[Lojban](https://mw.lojban.org/papri/Lojban)] is a constructed language with many properties that are likely valuable for human-computer interaction.
+[Lojban](https://mw.lojban.org/papri/Lojban) is a constructed language with many properties that are likely valuable for human-computer interaction.
 
 ### Motivation
 
@@ -20,7 +20,7 @@ The original design goal was to create a generic, fleixbile, and speakable inter
 
 ## Installation
 
-You will need [[stack](https://docs.haskellstack.org/en/stable/README/)] to build this project.
+You will need [stack](https://docs.haskellstack.org/en/stable/README/) to build this project.
 
 
 To install the project:

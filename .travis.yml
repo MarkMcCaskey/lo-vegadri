@@ -22,6 +22,7 @@ matrix:
 before_install:
  - unset CC
  - export PATH=$HOME/.local/bin:/opt/ghc/$GHCVER/bin:$PATH
+ - git submodule update --init --recursive
  - ./.travis-setup.sh
 
 install:

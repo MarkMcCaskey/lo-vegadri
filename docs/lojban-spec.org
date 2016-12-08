@@ -360,47 +360,56 @@
 ** TODO Types
 *** TODO Numbers
 **** TODO Type conversion
-     - Note taken on [2016-11-01 火 16:02] \\
-       This should include things like positive infinity + negative
-       infinity, division by 0.
        
-       This functions effectively as a monad wrapping failure
      Any operation with two or more arguments will promote arguments
      to the highest rank. 
      
      The order of rank is:
-     0. Undefined
-     1. Complex fraction
-     2. Integer fraction
-     3. Integer
-     4. Boolean
+     1. JboRational
+     2. JboFloat
+     3. JboInt
         
-    |---+----------+----------+---------+----------+---------+----------|
-    |   | su'i     | Integer  | Complex | Fraction | Special | Boolean  |
-    |---+----------+----------+---------+----------+---------+----------|
-    | / | <>       | <>       | <>      | <>       | <>      | <>       |
-    |   | Integer  | Integer  | Complex | Fraction | Special | Integer  |
-    |---+----------+----------+---------+----------+---------+----------|
-    |   | Complex  | Complex  | Complex | Complex  | Special | Complex  |
-    |---+----------+----------+---------+----------+---------+----------|
-    |   | Fraction | Fraction | Complex | Fraction | Special | Fraction |
-    |---+----------+----------+---------+----------+---------+----------|
-    |   | Special  | Special  | Special | Special  | Special | Special  |
-    |---+----------+----------+---------+----------+---------+----------|
-    |   | Boolean  | Integer  | Complex | Fraction | Special | Boolean  |
-    |---+----------+----------+---------+----------+---------+----------|
+     For example, the type conversion table for the addition function,
+     \emph{su'i}, is:
+    |---+-------------+-------------+-------------+-------------|
+    |   | su'i        | JboInt      | JboFloat    | JboRational |
+    |---+-------------+-------------+-------------+-------------|
+    | / | <>          | <>          | <>          | <>          |
+    |   | JboInt      | JboInt      | JboFloat    | JboRational |
+    |---+-------------+-------------+-------------+-------------|
+    |   | JboFloat    | JboFloat    | JboFloat    | JboRational |
+    |---+-------------+-------------+-------------+-------------|
+    |   | JboRational | JboRational | JboRational | JboRational |
+    |---+-------------+-------------+-------------+-------------|
+    
+    However, it's not guaranteed that the type of the return value of
+    a function will equal to one of it's arguments.  For example, the
+    division function, \emph{}, has the following type conversion table:
+    |---+-------------+-------------+-------------+-------------|
+    |   | fe'i        | JboInt      | JboFloat    | JboRational |
+    |---+-------------+-------------+-------------+-------------|
+    | / | <>          | <>          | <>          | <>          |
+    |   | JboInt      | JboRational | JboFloat    | JboRational |
+    |---+-------------+-------------+-------------+-------------|
+    |   | JboFloat    | JboFloat    | JboFloat    | JboRational |
+    |---+-------------+-------------+-------------+-------------|
+    |   | JboRational | JboRational | JboRational | JboRational |
+    |---+-------------+-------------+-------------+-------------|
      
-**** TODO Integer
-     - Note taken on [2016-11-01 火 16:11] \\
-       Maybe specify the bit layout?
-     + The integer type has arbitrary precision and is unsigned.  
+**** DONE Integer
+     + The integer type has arbitrary precision and is signed.  
+     + The integer type must be able to represent positive and
+       negative whole numbers
      + The implementation of arbitrary precision integers is
        implementation defined.
+     + The bit/byte layout of integers is implementation defined.
        
 **** TODO Fraction
+     + The fraction type is composed of two integers
+     + The fraction type is stored in reduced form
+     + Non-reduced fractions must be quoted and are not of Mekso type
+       
 
-     The Fraction type uses two [[Integers]] to represent a rational
-     number.  It is stored in reduced form.
 **** TODO Complex
 **** TODO Special
      For now this includes:
