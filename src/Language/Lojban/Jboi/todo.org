@@ -1,0 +1,12 @@
+* TODO Selbri 
+* TODO Bridi
+* DONE Sumti
+** DONE Mekso
+** DONE Prosumti
+*** DONE Anaphoric (self-referential)
+*** DONE Assignable (pronouns/variables)
+*** DONE Utterance (state)
+*** DONE Demonstrative
+*** DONE Mi (fundamental pronouns and commands)
+
+

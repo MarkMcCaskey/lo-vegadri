@@ -1,0 +1,101 @@
+name:                lenjo
+version:             0.0.1.0
+synopsis:            Semantic Lojban "standardization" attempt and implementation
+description:         Please see README.md
+homepage:            https://github.com/MarkMcCaskey/lenjo
+license:             BSD3
+license-file:        LICENSE
+author:              Mark McCaskey
+maintainer:          mmccask2@gmu.edu
+copyright:           2016 Mark McCaskey
+category:            Web
+build-type:          Simple
+-- extra-source-files:
+cabal-version:       >=1.10
+ 
+library
+  hs-source-dirs:      src, src/Language/Lojban/Jboi
+  exposed-modules:     Lib, Language.Lojban.Jboi.CSTtoAST, Language.Lojban.Jboi.Mekso, Language.Lojban.Jboi.Constant
+  build-depends:       array
+                     , base >= 4.7 && < 5
+                     , lojbanParser
+                     , bytestring
+                     , containers >= 0.5.7.1
+                     , logict
+                     , optparse-applicative
+                     , parsec
+                     , text
+                     , lens
+                     , random
+                     , unbound
+                     , mtl
+                     , numeric-prelude
+                     , include-file
+                     , datalog
+  build-tools:
+  default-language:    Haskell2010
+  ghc-options:         -Wall -O2 -optc-O3
+
+executable jboi
+  hs-source-dirs:      app/jboi
+  main-is:             Main.hs
+  ghc-options:         -Wall -O2 -optc-O3 -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , simple
+                     , text
+                     , mtl
+                     , lenjo
+                     , repline
+                     , haskeline
+                     , optparse-applicative
+                     , lojbanParser
+                     , datalog
+                     , include-file
+                     , bytestring
+
+  default-language:    Haskell2010
+
+flag integration-tests
+  manual:              True
+  default:             False
+  description:         Run the integration test suite
+  
+test-suite stack-integration-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test/integration
+  main-is:             IntegrationSpec.hs
+  build-depends:       base
+                     , lenjo
+                     , hspec
+                     , QuickCheck
+                     , smallcheck
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N -Wall -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -O2 -optc-O3
+  default-language:    Haskell2010
+
+test-suite simple-test
+  type:                exitcode-stdio-1.0
+  hs-source-dirs:      test
+  main-is:             Spec.hs
+  build-depends:       base
+                     , simple
+                     , lojbanParser
+                     , lenjo
+                     , hspec
+                     , QuickCheck 
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N -Wall -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -O2 -optc-O3
+  default-language:    Haskell2010
+
+benchmark eval-mekso
+  type:             exitcode-stdio-1.0
+  hs-source-dirs:   bench
+  main-is:          MainBenchmarkSuite.hs
+  build-depends:    base
+                  , criterion
+                  , lenjo
+                  , lojbanParser
+  ghc-options:      -threaded -rtsopts -with-rtsopts=-N -Wall -O2 -optc-O3
+  default-language: Haskell2010
+
+source-repository head
+  type:     git
+  location: https://github.com/MarkMcCaskey/lenjo

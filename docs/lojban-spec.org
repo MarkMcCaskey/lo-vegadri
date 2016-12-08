@@ -1,0 +1,654 @@
+#+TITLE: Lojban (for voice programming) semantic standard v0.1
+#+DATE: 2016-11-01
+#+AUTHOR: Mark
+#+EMAIL: mmccask2@gmu.edu
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:(not "LOGBOOK") date:t
+#+OPTIONS: e:t email:nil f:t inline:t num:t p:nil pri:nil stat:t
+#+OPTIONS: tags:t tasks:t tex:t timestamp:t toc:t todo:nil |:t
+#+CREATOR: Emacs 24.5.1 (Org mode 8.2.10)
+#+DESCRIPTION: Semantics for Lojban
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS: Semantics, Lojban, contstructed language, conlang, standard
+#+LANGUAGE: en, jbo
+#+SELECT_TAGS: export
+#+LATEX_CLASS_OPTIONS: [11pt]
+#+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \usepackage{amsmath}
+#+LATEX_HEADER: \usepackage[margin=0.8in]{geometry}
+#+LATEX_HEADER: \setlength{\parskip}{\baselineskip}
+#+LATEX_HEADER: \setlength{\parindent}{0pt}
+
+\clearpage
+* DONE License
+  
+  This document is licensed under the Creative Commons Attribution
+  4.0 International license.
+  The details can be found at: https://creativecommons.org/licenses/by/4.0/.
+ 
+  In summary it says that you are permitted to copy and redistribute
+  this work in any form, modify and transform it, and use it for
+  commercial purposes provided that you provide attribution to
+  author(s) (namely, Mark McCaskey), provide a link to the license and
+  indicate any changes made.
+  
+  The name(s) of the author(s) may not be used for implied or explicit
+  endorsement of any modifications of this document or products
+  related to it.
+  
+  Sharing your changes is \emph{strongly} encouraged but not required
+  by the license.  Additionally, further development on the standard
+  is highly encouraged, and any changes submitted to the author(s)
+  will be considered for inclusion in the official version.
+\clearpage
+* TODO Introduction   
+  
+  This document defines the standard for the \emph{lenjo} semantic
+  definition of the Lojban language.
+** DONE Abstract
+   
+   The \emph{lenjo} semantic standard is intended to be a throrough
+   formalization of the meaning of lojban sentences, in the context of
+   computation.  This standard is created for the purpose of
+   supporting lojban as an interactive metaprogramming language and so
+   includes specialized information about interacting with outside
+   programs and movement in the context of text editing.  However,
+   portions of this standard could be used to create a general purpose
+   logic-based programming language.
+
+** TODO Justification
+   
+   Due to the abstract nature of the claims in the abstract,
+   significant space will be used in this section justifying the
+   design decisions.
+
+*** TODO Why Lojban?
+    
+    Lojban is a logical, grammatically unambigious, culturally neutral
+    constructed language.  The following subsections are dedicated to
+    discussing the merits of these aspects of the language for use as
+    a more natural and powerful interface for the task of interactive
+    metaprogramming.
+    
+**** DONE Constructed Language
+     
+     The reason why a constructed language was chosen over an existing
+     human language is due to the careful design that comes with
+     constructed languages.  In particular, the highly logical nature
+     or potential of Lojban is very conducive to communicating to a
+     computer effectively.
+
+     All languages contain ambiguity and various ways to resolve them.
+     However, unambigious speech is rarely natural or even formally
+     grammatically correct.  This is a major issue when attempting to
+     communicate to a computer because these ambiguities may not be
+     clearly resolvable, possibly at no fault of the computer, simply
+     that the phrasing/language is inadequate to clearly express the
+     ideas intended.
+     
+     There are, however, major disadvantages to using a constructed
+     language.Due to the lack of native speakers, almost anyone who
+     wants to use the system will have to learn a new language (a
+     non-trivial task).  Additionally the lack of native speakers
+     means that there is less literature written in this language than
+     in most natural languages, which makes the language significantly
+     harder to learn. Finally another major negative is due to the
+     lack of popularity, there's less research on computation in
+     Lojban than in other natural languages.
+     
+     That said there are quite a few benefits to using a constructed
+     language.  The carefully designed nature of constructed
+     languages, especially Lojban, leads to a language that is not
+     only easier to parse but easier to deal with in regards to
+     computers in all regards.  Additionally because there is very
+     little irregularity in the language, it is easier to learn the
+     most natural languages. The use of a new language also conveys to
+     the user that they will have to think and speak in a way
+     different than what you're used to, a point that can't be
+     understated -- meaningful and efficiently interfacing to a
+     computer necessarily requires speaking and thinking in a
+     different way.
+**** TODO Phonetics
+     
+     The phonetics of lojban are 
+**** TODO Phonology
+***** DONE Text-speech isomorphism
+
+      A rather unique, and quite useful, feature of lojban is that of
+      being isomorphic between writting and speaking.  This goes
+      beyond simply being a phonetic language, or a language with
+      regular pronunciation.  Lojban can explicitly express emotional
+      indicators, punctuation, and other parts of language not usually
+      expressed explicitly.
+
+      This means that lojban is particularly well suited to being
+      completely unambiguous if the user chooses to speak or write in
+      a clear way.  This allows for natural, completely clear input by
+      voice significantly easier than would be possible in any natural
+      language.
+      
+      An example of this is the use of \emph{.i} at the beginning of
+      sentences to indicate the beginning of a sentence.  This is
+      likely significantly easier to recognize than a pause or other
+      non-vocal separator used in natural languages.
+
+      The combination of unambigious grammar, phonetics, and
+      morphology mean that efficient and accurate transfer of
+      information to a computer program is a feasible goal.  This
+      means that with the use of voice recognition system utilizing a
+      full implementation of the grammar for recognition/prediction
+      and can output either directly into a parsed form of lojban or
+      directly into an exact transcription which can be unambiguously
+      parsed by another system.
+**** TODO Morphology
+     
+     The morphology of lojban is unambiguous and provides mechanisms
+     to create new, concise words unambiguously.
+**** TODO Syntax
+     
+     The syntax of lojban is very different from most natural
+     languages and is particularly notable for using a system other
+     than nouns and verbs and being completely unambiguous.
+**** TODO Semantics
+**** TODO Pragmatics
+***** TODO References
+*** TODO Potential uses
+  
+* DONE Scope
+
+  The semantics defined by this specification are relevant only for
+  the \emph{lenjo} (working title) implementation of Lojban as a
+  computational language, specifically with the intention to be used
+  as an interactive meta-programming language.
+  
+  This specification is unofficial and unrelated to the Logical
+  Language Group.
+  
+  The purpose of this specification is to provide a central reference
+  and formalization of semantics for use with Lojban as a
+  computer-language.  
+
+  Versions under v1.0 are considered pre-release and under
+  development.  The details of any aspect of this system is likely to
+  change prior to the first major release.  After which, breaking
+  changes will be minimized within a major version, but may be
+  included in subsequent major versions.
+  
+  Any discrepancies between this document and the official reference
+  grammar should be interpreted as: this document is official for all
+  \emph{lenjo} semantic lojban implementations but may not
+  necessarily line up with the official lojban grammar.
+  
+* TODO Normative references
+  The Lojban reference grammar by the Logical Language Group is the
+  authority on syntax for this specification.
+* TODO Terms and definitions
+** TODO Program specific terms
+
+   - lenjo :: working title of this standard/program implementation
+** TODO Lojban terms
+
+   - mekso :: mathematical expression/value
+   - selbri :: a relationship with a place structure defining the
+               components of the relationship
+   - sumti :: an argument to a selbri.  It fills a place structure
+* TODO The run-time system
+** TODO Database
+*** TODO Relationships
+    
+    The system shall provide an interface to query relationships/facts
+    that may come from the user, from the system itself, or from
+    external programs.
+    
+    Querying by questions shall allow for checking the validity of a
+    relationship or querying specific parts of the relationship.
+    
+    The database or run-time system shall support quantifiers
+    (wildcard-esque searching).
+
+    The run-time system may choose to compute relationships rather
+    than storing them.  This is the recommended behavior for simple
+    mekso and logical connectives.
+    
+    The database shall support querying based on time, location, and
+    attitudinal indicators.
+
+    Queries to the database shall be lazily evaluated.  This may be
+    implemented as partial evaluation up to a given threshold number
+    of responses or the time used to find/evaluate.  These thresholds
+    are implementation defined, but must be queryable from the
+    database.
+**** TODO include information about what words to use to query this information
+** DONE Commands
+   
+   Commands use the imperative pro-sumti \emph{ko} and are defined to
+   mean, "make this relationship true", as specified by the Lojban
+   reference grammar.
+   
+   Commands that are not implemented or understood shall trigger an
+   error message from the run-time system.  The run-time system shall
+   provide as much detail as possible (given the desired level of verbosity).
+   
+   Commands may have side-effects and affect the state of other
+   programs/data on the computer.
+   
+   Commands shall have information about the nature of possible side
+   effects.  Currently the details of this are implementation defined.
+
+** DONE Interface to external programs
+*** DONE Arbitrary key presses
+    
+    The run-time system shall provide a mechanism to simulate key
+    presses into the operating system.
+
+    The system must support Latin alphanumeric characters and
+    punctuation, specified as the ASCII values between 0x20 and 0x7E
+    (32 and 126), inclusive.  The use of capital letters or symbols
+    normally accessed through modifier keys is implementation defined.
+    (i.e. the system may require (Shift-d) to input the character 'D'
+    or it may allow for its input directly.
+
+    Additionally the system shall support enter/return, tab, and
+    escape.
+    
+    The system should support a mechanism to simulate F1-F12 keys.
+    
+    The system shall support all relevant modifier keys. On Unix-like
+    systems this includes ctrl, alt, shift, and super.
+    
+    The system may support additional keys such as backspace, delete,
+    insert, etc.
+    
+    If the key press mechanism is not a proper simulation, the details
+    of key press interaction are deferred to the operating system to
+    which the system is running on.  (i.e. the meaning of (Shift-a),
+    (Ctrl-c), etc. is implementation defined)
+    
+*** DONE Mouse movement
+
+    The run-time system may provide a mechanism to control mouse
+    movement.
+
+    If such a mechanism is provided, it shall support both
+    absolute and relative movement, as discussed in the location
+    section.
+
+*** DONE Other input
+    
+    The run-time system shall support a mechanism to interface with
+    other programs.  This is implementation defined, although an API
+    must be provided.
+
+    The run-time system may utilize operating system API-calls, pipes,
+    sockets, or other forms of message passing to provide an
+    API/communication interface to external programs.
+    
+    The API should be designed to avoid stateful/ordered messages
+    whenever feasible.  (i.e. prefer self-contained messages to state
+    machines or mutation)
+    
+    The API shall include mechanisms to take information regarding
+    space and time from external programs.  The design of these
+    messages are implementation defined, but should generally conform
+    to selbri-style relationships.
+    
+    The run-time system shall report information about commands or
+    relationships not supported, understood, or yet implemented
+    regarding any external programs.
+
+* TODO Selbri
+** TODO Background
+   
+   Selbri define relationships.  Most selbri contain between 1 and 5
+   arguments, called sumti.
+*** TODO Place structure
+    
+    The standard way to specify sumti is to put the $x_1$ place before
+    the selbri and the rest follow the selbri
+    
+**** DONE Modification
+     
+     Selbri can have their place structure specified in a different
+     order.  This can be done by swapping places or by specifying
+     sumti positions.
+
+***** DONE Varying order
+      
+      The following cmavo can be used to change the order in which the
+      sumti arguments are taken into the selbri relationship.
+      
+      - se :: swap $x_1$ and $x_2$ places
+      - te :: swap $x_1$ and $x_3$ places
+      - ve :: swap $x_1$ and $x_4$ places
+      - xe :: swap $x_1$ and $x_5$ places
+              
+      If more than one is specified, they are evaluated from left to right.
+
+      For example: \emph{setese dunda} has the order (using the
+      original numbers) $x_1 x_3 x_2 x_4 x_5$
+***** DONE Specifying 
+      
+      The places where the sumti are applied, can be specified
+      explicitly.
+      
+      - fa :: the following sumti goes into the $x_1$ place
+      - fe :: the following sumti goes into the $x_2$ place
+      - fi :: the following sumti goes into the $x_3$ place
+      - fo :: the following sumti goes into the $x_4$ place
+      - fu :: the following sumti goes into the $x_5$ place
+              
+      If multiple of the same place structure specifiers are used, the
+      furthest right one takes precedence.
+   
+**** TODO Unlimited places
+** TODO Existential relationships
+* TODO Sumti
+** TODO Types
+*** TODO Names
+*** TODO Sets
+*** TODO Masses
+*** TODO Individuals?
+    - Note taken on [2016-11-01 火 14:43] \\
+      Is this actually a thing?
+      
+* TODO Mekso
+** TODO Introduction
+   - Note taken on [2016-11-01 火 16:14] \\
+     Look this up and fix this
+   Mekso is the Lojban word for "math" or "mathematical expressions"
+   This section covers everything from numbers to expressions.
+** TODO Types
+*** TODO Numbers
+**** TODO Type conversion
+     - Note taken on [2016-11-01 火 16:02] \\
+       This should include things like positive infinity + negative
+       infinity, division by 0.
+       
+       This functions effectively as a monad wrapping failure
+     Any operation with two or more arguments will promote arguments
+     to the highest rank. 
+     
+     The order of rank is:
+     0. Undefined
+     1. Complex fraction
+     2. Integer fraction
+     3. Integer
+     4. Boolean
+        
+    |---+----------+----------+---------+----------+---------+----------|
+    |   | su'i     | Integer  | Complex | Fraction | Special | Boolean  |
+    |---+----------+----------+---------+----------+---------+----------|
+    | / | <>       | <>       | <>      | <>       | <>      | <>       |
+    |   | Integer  | Integer  | Complex | Fraction | Special | Integer  |
+    |---+----------+----------+---------+----------+---------+----------|
+    |   | Complex  | Complex  | Complex | Complex  | Special | Complex  |
+    |---+----------+----------+---------+----------+---------+----------|
+    |   | Fraction | Fraction | Complex | Fraction | Special | Fraction |
+    |---+----------+----------+---------+----------+---------+----------|
+    |   | Special  | Special  | Special | Special  | Special | Special  |
+    |---+----------+----------+---------+----------+---------+----------|
+    |   | Boolean  | Integer  | Complex | Fraction | Special | Boolean  |
+    |---+----------+----------+---------+----------+---------+----------|
+     
+**** TODO Integer
+     - Note taken on [2016-11-01 火 16:11] \\
+       Maybe specify the bit layout?
+     + The integer type has arbitrary precision and is unsigned.  
+     + The implementation of arbitrary precision integers is
+       implementation defined.
+       
+**** TODO Fraction
+
+     The Fraction type uses two [[Integers]] to represent a rational
+     number.  It is stored in reduced form.
+**** TODO Complex
+**** TODO Special
+     For now this includes:
+     * infinity
+     * elliptical values (i.e. 0.34... or ...123)
+     * Degrees?
+**** TODO Radix/Bases
+*** TODO Boolean
+**** TODO Truth
+
+     The selbri for truth is =jetnu=.
+**** TODO Falsity
+**** TODO Undecidable
+     
+     Expressions that are neither true nor false shall be designated
+     undecidable.
+
+     Undecidability will be determined after a certain length of
+     computation.  This limit is implementation defined and shall be
+     handled by the run-time system.  This limit must be queryable.
+
+     Additionally, certain statements involving self-refence may be
+     determined to be undecidable by static analysis.  This is not
+     required, but for performance reasons is very strongly
+     encouraged.
+*** TODO Equations
+*** TODO Lambdas
+** DONE Manipulation
+*** DONE Term rewriting, etc.
+    
+    Term rewriting, also called symbolic manipulation is the ability
+    to treat expressions as expressions (structured groups of symbols)
+    and change them.
+    
+    Term rewriting can be used for many purposes, including, for
+    example, derivatives.  Combined with the question answering aspect
+    of \emph{lenjo}, term rewriting/expression manipulation allows for
+    algebraic problem solving.
+    
+    Term rewriting is not described/implemented in V0.1 of the
+    standard.
+    
+    However, mekso can queryed and manipulated in the same way that
+    any other grammatical structure can be.
+    
+** TODO Evaluation
+*** TODO Precedence
+**** DONE Normal precedence
+     
+     If not otherwise specified, all mekso expressions are parsed from
+     left to right as described in the CLL.
+     
+     Thus $1 + 2 * 3$ is equal to 9 and not 7 (as it would be under
+     normal arithmetic).
+     
+**** TODO Changing precedence
+     
+     Explicit precence can be set with \texttt{bi'e} and \texttt{vei}
+     and \texttt{[ve'o]}
+*** TODO Boolean
+    
+    Boolean values are values that represent the truth of a statement.
+    In this version of \emph{lenjo} they must be true, false, or
+    undecidable (a special value used to prevent infinite loops).
+    
+    The standard defines the 16 logical connections. Copied verbatim
+    from the reference grammar:
+
+    | truth | ek      | jek     | gihek     | gek–gik     | guhek–gik     |
+    |-------+---------+---------+-----------+-------------+---------------|
+    | TTTF  | .a      | ja      | gi'a      | ga–gi       | gu'a–gi       |
+    | TTFT  | .anai   | janai   | gi'anai   | ga–ginai    | gu'a–ginai    |
+    | TTFF  | .u      | ju      | gi'u      | gu–gi       | gu'u–gi       |
+    | TFTT  | na.a    | naja    | nagi'a    | ganai–gi    | gu'anai–gi    |
+    | TFTF  | se.u    | seju    | segi'u    | segu–gi     | segu'u–gi     |
+    | TFFT  | .o      | jo      | gi'o      | go–gi       | gu'o–gi       |
+    | TFFF  | .e      | je      | gi'e      | ge–gi       | gu'e–gi       |
+    | FTTT  | na.anai | najanai | nagi'anai | ganai–ginai | gu'anai–ginai |
+    | FTTF  | .onai   | jonai   | gi'onai   | go–ginai    | gu'o–ginai    |
+    | FTFT  | se.unai | sejunai | segi'unai | segu–ginai  | segu'u–ginai  |
+    | FTFF  | .enai   | jenai   | gi'enai   | ge–ginai    | gu'e–ginai    |
+    | FFTT  | na.u    | naju    | nagi'u    | gunai–gi    | gu'unai–gi    |
+    | FFTF  | na.e    | naje    | nagi'e    | genai–gi    | gu'enai–gi    |
+    | FFFT  | na.enai | najenai | nagi'enai | genai–ginai | gu'enai–ginai |
+    
+    These are built from four fundamental logical connectives,
+    \emph{a, o, e, u}
+    
+    | Vowel              | Logical Meaning | Mathematical Notation |
+    |--------------------+-----------------+-----------------------|
+    | $x$ \textbf{a} $y$ | inclusive or    | $x \lor y$            |
+    | $x$ \textbf{e} $y$ | and             | $x \land y$           |
+    | $x$ \textbf{o} $y$ | if and only if  | $x \iff y$            |
+    | $x$ \textbf{u} $y$ | whether or not  | $x$                   |
+
+**** DONE Statements of fact
+     
+     All brivla are considered statements of fact.  The system shall
+     respond with an error if contradictory facts are given.
+*** TODO Numeric
+**** DONE Parsing numbers
+     
+     Numbers are parsed from left to right and are interpreted in base
+     10 by default.
+     
+     If multiple numbers need to be listed next to each other, such as
+     when using Polish notation for functions, they must be separated
+     with \texttt{boi} to indicate the termination of the number.
+
+     Thus \texttt{li pe'o su'i pa pa} evaluates to 11, whereas
+     \texttt{li pe'o su'i pa boi pa} evaluates to 2.
+***** DONE Signed   
+      
+      The current interpretation of signed numbers is that all
+      occurances of \texttt{ni'u} (-1) and \texttt{ma'u} (1) are
+      multiplied together and the resulting value is applied to the
+      entire number.
+****** DONE Extended Sign functionality
+       
+       There is an experimental interpretation of multiple signs in a
+       number which may be supported, namely the signs are multiplied
+       together with \texttt{ni'u} = -1 and \texttt{ma'u} = 1 and
+       apply to all numbers to the right of it until another sign is
+       found, at which point the sign is recalculated.
+
+       Thus \texttt{li ni'u ni'u re ni'u mu} would be equal to 15
+       instead of -20 (as it is in the normal parse order).
+
+       Alternatively, signs could apply to all numbers to the right
+       until another sign is seen, at which point the sign changes for
+       all numbers to the right.  This is simpler and will likely be
+       the form that the extended sign functionality in numbers takes
+       if it isn't removed.
+
+       The benefits of this are that Roman numeral-esque numbers can
+       be constructed.  Thus \emph{XI} could be represented as
+       \texttt{li pa ni'u pa}.
+       
+       That said, this functionality seems to be impractical and will
+       probably be removed or made as an optional extension for later
+       versions of this standard.
+***** DONE Delimeters
+      
+      A decimal point is specified with \texttt{pi}, so \texttt{re pi
+      mu} = 2.5.  The type is currently an IEEE 64bit floating point
+      number.  This means that equalities that may be true under the
+      rational or real numbers may not hold if \texttt{pi} is used.
+      In most cases the fractional type should be prefered.
+      
+      Commas are specified as \texttt{ki'o} and represent groupings of
+      three.  If used on groups smaller than three, it is filled in
+      with leading zeroes. Thus, \texttt{pa ki'o re ki'o muci} =
+      001,002,053 = 1,002,053 = 1002053 and \texttt{pi ki'o ki'o mu} =
+      0.000005 as specified in section 18-3 of the CLL.
+      
+***** DONE Fractional
+      
+      The cmavo \texttt{fi'u} can be used to indicate fractions.
+      These are represented as a ratio and thus will not lose
+      precision, unlike decimal numbers. Thus \texttt{re fi'u ze} =
+      $\frac{2}{7}$.
+      
+      If no numerator is given, it is implicitly one.  Thus,
+      \textt{fi'u re} = $\frac{1}{2}$
+      
+***** DONE Percentages
+      
+      Percentages are a special case of fractional numbers. Using the
+      cmavo \texttt{ce'i} we have a unary cmvao that has a denominator
+      of 100.  Thus \texttt{mu ce'i} = 5% = $\frac{5}{100}$.
+
+      Currently percentages greater than 100 are accepted.  This
+      become a semantic error later.  Perhaps a distinction will be
+      made allowing for no ambigiuity.  Until then, \texttt{ce'i} is a
+      special case of \texttt{fi'u}
+***** DONE Other bases
+      
+      Alternate bases can be defined with \texttt{ju'u}.
+
+      Currently, bases that are not natural numbers greater than or
+      equal to two shall cause the system to produce an error.
+      
+      Formally, the radix behavior can be seen as $\sum_{i=0}^{n}
+      a_i \cdot b^i$ where $a_i$ is the $i$th digit of the number $a$
+      and $n$ is one less than the number of digits in $n$ in base $b$.
+      
+      Currently single digits larger than 15 are not supported.  There
+      are options for extending this but as of right now bases higher
+      than 16 are supported, but a warning should be produced to
+      indicate that digits larger than 15 are not, so not all numbers
+      will be able to be written.
+***** DONE Repeating decimals
+      
+      In this version of the standard, repeating decimals are not
+      supported.  They are apart of the CLL and will be supported at a
+      later date.
+** TODO Undefined Behavior
+** TODO Index/reference
+
+   - Note taken on [2016-11-01 火 14:38] \\
+     Should logic be separate from mekso?  Probably...
+     
+* TODO Predicates
+* TODO Questions
+** TODO Selbri
+   - Note taken on [2016-11-01 火 14:38] \\
+     Not sure if that's what these are called
+*** DONE Xu
+    
+    \emph{Xu} questions are statements prefixed with the cmavo
+    \emph{xu}.  These are the most basic form of questions.  They ask
+    if the given relationship is true/valid.  
+
+    The answer to these questions are Boolean values.  An example of
+    what this looks like is 
+    \texttt{\\>.i xu li pa su'i pa du li re}
+    \texttt{\\go'i} \texttt{\\>.i xu li pa su'i pa du li ci}
+    \texttt{\\nago'i}
+** TODO Sumti
+*** DONE Ma
+    - Note taken on [2016-11-03 木 19:21] \\
+      Not sure if this is fully grammatically correct.  Figure this out and add more examples
+    
+    \emph{Ma} questions are regular statements with one or more sumti
+    places filled with \emph{ma}.  These types of questions ask what
+    value can fill this sumti place to make this statement true.
+    
+    The answer to these questions are sumti.  An example of this is 
+    \texttt{\\>.i li pa su'i pa du ma}
+    \texttt{\\li pa}
+
+*** TODO Xo
+    
+* TODO Quotations
+  
+  Quotations come in two forms, \emph{zo} for single word quotes and
+  \emph{XX} for longer quotes, terminated by \emph{YY}.
+** TODO Types
+*** TODO Lojban
+*** TODO Natural language
+*** TODO Programming/Shell
+*** TODO List of quotable languages
+** TODO Evaluation
+*** TODO Lojban
+*** TODO Programming/Shell
+* TODO Quantifiers
+* TODO Time
+* TODO Location
+* TODO Annexes
+* TODO Bibliography
+

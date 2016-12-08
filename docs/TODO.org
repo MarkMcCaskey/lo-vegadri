@@ -1,0 +1,43 @@
+* Long term todo list
+
+* TODO Design
+** TODO Internal representation
+*** TODO Reduce complexity/unify concepts
+** TODO Mekso
+*** TODO Ensure full generality of concepts
+*** TODO Logical connectives (maybe with Arrows?)
+*** TODO User-defined functions
+** TODO Relationships
+*** TODO User-defined relationships
+*** TODO Tests
+** TODO Experimental compilation 
+*** TODO Plug in to LLVM
+*** TODO Optimization
+
+* TODO Documentation 
+** TODO Update haddock documentation
+** TODO Semantic standard
+*** TODO Mekso
+*** TODO Relationships
+*** TODO Reorganize document
+** TODO Working examples
+
+* TODO Implementation
+** TODO Text->CST parser
+*** TODO Switch to zasnigerna
+*** TODO Better error reporting
+*** TODO Switch from String to Data.Text
+*** TODO Data structures should have lens/plated instances
+*** TODO Consider further processing here
+** TODO Lambda calculus
+*** TODO Type checking
+**** TODO Parameterize constant types
+**** TODO Parameterize function types
+**** TODO More tests
+*** TODO Evaluation
+**** TODO Ensure evaluation order is sane
+**** TODO Further test
+*** TODO Structure
+**** TODO Reconcile functions (should be expressable in terms of lambdas or with higher-order functions)
+**** TODO More gracefully handle constants
+**** TODO Reconcile logic and mekso

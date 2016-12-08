@@ -1,0 +1,34 @@
+language: c
+sudo: true
+
+cache:
+    directories:
+        - $HOME/.ghc
+        - $HOME/.cabal
+        - $HOME/.stack
+
+before_cache:
+  - rm -fv $HOME/.cabal/packages/hackage.haskell.org/build-reports.log
+  - rm -fv $HOME/.cabal/packages/hackage.haskell.org/00-index.tar
+
+matrix:
+    - env: BUILD=stack GHCVER=8.0.1 STACK_YAML=stack.yaml
+      compiler: ": #stack 8.0.1"
+      addons: {apt: {packages: [ghc-8.0.1], sources: [hvr-ghc]}}
+
+# Note: the distinction between `before_install` and `install` is not important.
+# - in before_install we install build tools
+# - in install we install (haskell) dependencies
+before_install:
+ - unset CC
+ - export PATH=$HOME/.local/bin:/opt/ghc/$GHCVER/bin:$PATH
+ - ./.travis-setup.sh
+
+install:
+ - echo "$(ghc --version) [$(ghc --print-project-git-commit-id 2> /dev/null || echo '?')]"
+ - stack --no-terminal test --only-dependencies
+
+script:
+ - set -e
+ - stack --no-terminal test --haddock --no-haddock-deps 
+
