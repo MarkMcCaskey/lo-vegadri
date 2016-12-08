@@ -38,6 +38,7 @@ library
 executable jboi
   hs-source-dirs:      app/jboi
   main-is:             Main.hs
+  other-modules:       Repl
   ghc-options:         -Wall -O2 -optc-O3 -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , simple

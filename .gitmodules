@@ -1,0 +1,3 @@
+[submodule "src/Datalog"]
+	path = src/Datalog
+	url = https://github.com/markmccaskey/datalog
