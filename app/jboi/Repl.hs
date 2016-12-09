@@ -1,4 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-|
 Module     : Jboi
 Description: REPL for semantic Lojban
@@ -14,12 +15,19 @@ import qualified Language.Lojban.Parser as L
 import Database.Datalog
 import Language.Lojban.Jboi.Mekso
 import Language.Lojban.Jboi.CSTtoAST
+import Language.Lojban.Jboi.DB
 import Development.IncludeFile
 import qualified Data.ByteString as BS
+-- import qualified Data.ByteString.Internal.Lazy as LBS
+import qualified Data.Text.Lazy as LT
+import NLP.Dictionary.StarDict.InMemory
+import NLP.Dictionary.StarDict hiding (StarDict)
+import NLP.Dictionary
+import Data.Char (toLower)
+import qualified Data.Text as T
+
 
 $(includeFileInSource "data/Lojban_logo.txt" "logo")
-$(includeFileInSource "data/jbo-eng.idx" "jeIdx")
-$(includeFileInSource "data/jbo-eng.ifo" "jeIfo")
 
 type Repl a = HaskelineT IO a
 
@@ -39,13 +47,21 @@ loop instr = do
   where handler val = case val of
           (Meks m) -> runReplIO $ outputStrLn (show m) >> outputStrLn (show (e m))
           (Sumt s) -> runReplIO $ outputStrLn ("Sumti " ++ show s) 
-          (Selbr a b) -> runReplIO $ outputStrLn (show a ++ "\n" ++ show b)
+          (Selbr a b) -> runReplIO $ do
+            case b of
+              []    -> return ()
+              ([x]) -> liftIO $ (putStrLn . T.unpack . T.unlines . concat) =<<
+                ((\d -> unQ d ((_name a)) (processSumti x)) =<< (liftIO db))
+              ([x,y]) -> liftIO $ (putStrLn . T.unpack . T.unlines . concat) =<<
+                ((\d -> binQ d ((_name a)) (processSumti x) (processSumti y)) =<< (liftIO db))
+              _ -> outputStrLn ("other: " ++ show a ++ "\n" ++ show b)
           (Seq  l) -> mapM_ handler l
           f        -> runReplIO $ outputStrLn ("unsupported AST path. Found: " ++ show f)
 
 
           
-
+processSumti x = T.pack $ fmap(\y -> if y=='h' then '\'' else y) (fmap toLower (show x))
+  
 cmd :: String -> Repl ()
 cmd input = liftIO $ print input
 
@@ -53,6 +69,12 @@ completer :: Monad m => WordCompleter m
 completer n = do
   let words = ["pa","no","re","ci","vo","su'i","li","du"]
   return $ filter (isPrefixOf n) words
+
+--completerWithDict :: Monad m => (LT.Text -> IO [LT.Text]) -> WordCompleter m
+--completerWithDict dict n = (liftIO (LT.unpack . LT.unlines <$> ((dict . LT.pack) n )))
+--  let words = ["pa","no","re","ci","vo","su'i","li","du"]
+ -- return $ filter (isPrefixOf n) words
+
 
 help :: [String] -> Repl ()
 help args = liftIO $ print $ "Help: " ++ show args
@@ -63,6 +85,19 @@ options =
   ,("quit", const quit)
   ]
 
+optionsWithDict :: (LT.Text -> IO [LT.Text]) -> [(String, [String] -> Repl ())]
+optionsWithDict dict =
+  [("help", help)
+  ,("quit", const quit)
+  ,("lookup", printDef dict)
+  ]
+
+printDef :: (LT.Text -> IO [LT.Text]) -> [String] -> Repl ()
+printDef dict args = do
+  let d = mapM (dict . LT.pack) args
+  _ <- liftIO $ putStrLn . LT.unpack . LT.unlines . concat =<< d
+  return ()
+  
 quit :: Repl ()
 quit = abort >> return ()
 
@@ -72,3 +107,8 @@ ini = liftIO $ do
 
 repl :: IO ()
 repl = evalRepl ".i " loop options (Word0 completer) ini
+
+replWithDict :: StarDict -> IO ()
+replWithDict sd = do
+  let entLookup = (`getEntries` sd)
+  evalRepl ".i " loop (optionsWithDict entLookup) (Word0 completer) ini

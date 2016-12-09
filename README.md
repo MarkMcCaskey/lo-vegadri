@@ -29,7 +29,7 @@ You will need [stack](https://docs.haskellstack.org/en/stable/README/) to build 
 
 To install the project:
 ```
-git clone https://github.com/MarkMcCaskey/lo-tegadri
+git clone https://github.com/MarkMcCaskey/lo-tegadri --recursive
 cd lo-tegadri
 stack setup
 stack install

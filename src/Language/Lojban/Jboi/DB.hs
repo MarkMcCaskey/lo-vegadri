@@ -3,7 +3,7 @@
 module Language.Lojban.Jboi.DB where
 
 import Database.Datalog
-import Database.Datalog.Rules
+--import Database.Datalog.Rules
 import Data.Text hiding (zipWith)
 import qualified Data.Map as Map
 import Language.Lojban.Jboi.CSTtoAST
@@ -16,7 +16,7 @@ kohaList :: [Text]
 kohaList = (Map.toList kohamap)^..traverse._1
 
 unaryRelList    :: [(Text,Text)]
-unaryRelList    = [("prenu","mi")]
+unaryRelList    = [("prenu","mi"),("mroka'e","mi"),("prenu","do"), ("mroka'e", "do")]
 binaryRelList   :: [(Text,Text,Text)]
 binaryRelList   = [("prami","mi","do")]
 ternaryRelList  :: [(Text,Text,Text,Text)]
@@ -63,3 +63,22 @@ binQ db1 sel x1 x2 = do
                              lit binary [x,y,z]]
       issueQuery binRel [sel', x1', x2']
           
+unQ db1 sel x1 = do
+  queryDatabase db1 q
+  where
+    q = do
+      su     <- relationPredicateFromName "sumti"
+      se     <- relationPredicateFromName "selbri"
+      unary  <- relationPredicateFromName "unaryRel"
+      rel <- inferencePredicate "rel"
+ --     canDie <- inferencePredicate "canDie"
+      let x = LogicVar "X"
+          y = LogicVar "Y"
+          sel' = if sel == "mo" then x else (Atom sel)
+          x1'  = if x1  == "ma" then y else (Atom x1 )
+      (rel, [x,y]) |- [ lit se [x],
+                        lit su [y],
+                        lit unary [x,y]]
+ {-     (canDie, [Atom "mroka'e", x]) |- [lit se [Atom "mroka'e"],
+                                        lit unary [Atom "mroka'e", x]]-}
+      issueQuery rel [sel', x1']

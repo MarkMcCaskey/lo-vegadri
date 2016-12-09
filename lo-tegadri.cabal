@@ -14,7 +14,7 @@ cabal-version:       >=1.10
  
 library
   hs-source-dirs:      src, src/Language/Lojban/Jboi
-  exposed-modules:     Lib, Language.Lojban.Jboi.CSTtoAST, Language.Lojban.Jboi.Mekso, Language.Lojban.Jboi.Constant
+  exposed-modules:     Lib, Language.Lojban.Jboi.CSTtoAST, Language.Lojban.Jboi.Mekso, Language.Lojban.Jboi.Constant, Language.Lojban.Jboi.DB
   build-depends:       array
                      , base >= 4.7 && < 5
                      , lojbanParser
@@ -52,6 +52,8 @@ executable jboi
                      , datalog
                      , include-file
                      , bytestring
+                     , dictionaries
+                     , directory
 
   default-language:    Haskell2010
 
