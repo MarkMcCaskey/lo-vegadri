@@ -24,7 +24,7 @@ library
     extensions:		DeriveDataTypeable
     exposed-modules:	Language.Lojban.Parser
     other-modules: Preprocess LexerPappy Pos Parse TestPappy 
-    ghc-options:         -Wall -Odph -threaded -rtsopts -with-rtsopts=-N -optc-O3
+    ghc-options:         -Wall -O2 
     build-depends:	base > 3 && < 5
                       , lens
 
