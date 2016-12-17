@@ -1,6 +1,6 @@
-# lo tegadri
+# lo vegadri
 
-[![Build Status](https://travis-ci.com/MarkMcCaskey/lo-tegadri.svg?token=JRN5sRswefsvVxT2unVR&branch=master)](https://travis-ci.com/MarkMcCaskey/lo-tegadri)
+[![Build Status](https://travis-ci.org/MarkMcCaskey/lo-vegadri.svg?branch=master)](https://travis-ci.org/MarkMcCaskey/lo-vegadri)
 
 WARNING: this project is in early development and is likely unsafe and broken.  Expect bugs.  Contributions welcome.
 
@@ -29,8 +29,8 @@ You will need [stack](https://docs.haskellstack.org/en/stable/README/) to build 
 
 To install the project:
 ```
-git clone https://github.com/MarkMcCaskey/lo-tegadri --recursive
-cd lo-tegadri
+git clone https://github.com/MarkMcCaskey/lo-vegadri --recursive
+cd lo-vegadri
 stack setup
 stack install
 ```

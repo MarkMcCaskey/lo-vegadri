@@ -42,8 +42,12 @@ data AST
   | Selb !SelbriD
   | Sumt !SumtiD
   | Selbr !SelbriInfo ![SumtiD]
+  | Sel !SelbriInfo ![SumtiD] ![Se]
   | Seq ![AST]
   deriving (Show)
+
+data Se = Se | Te | Xe
+  deriving (Show, Eq)
 
 data ProSumtiMi
   = MI | DO | MIhO | MIhA | MAhA | DOhO | KO
@@ -195,11 +199,14 @@ ast (TermsBridiTail s _ _ t)     = case ast t of
   (Just (Selb v)) -> case (lookupSelbri (v^.selbriName.to T.unpack)) of
     (Just si) -> Selbr si <$> (sequence (fmap astSumti s)) 
     Nothing   -> fail "selbri unsupported"
-  (Just (Selbr v _))-> Selbr v <$> (sequence (fmap astSumti s)) 
+  (Just (Selbr v _))  -> Selbr v <$> (sequence (fmap astSumti s)) 
+  (Just (Sel v _ se)) -> (\b -> Sel v b se) <$> (sequence (fmap astSumti s))
   x               -> fail ("invalid selbri in tbt: " ++ show x)
 ast (SelbriTailTerms s t _ _)    = case (astSelbri s) of
   Left err          -> fail err
-  Right (Selbr i _) -> (Selbr i) <$> (sequence (fmap astSumti t)) 
+  Right (Selbr i _)  -> (Selbr i) <$> (sequence (fmap astSumti t)) 
+  Right (Sel i _ se) -> (\b -> Sel i b se) <$> (sequence (fmap astSumti t))
+
 
   
 {-|
@@ -236,8 +243,25 @@ astSumti (LOhU _ _ t _ _ _)   = return . Quote . T.pack . unwords $ t
 astSumti _ = fail "this type of sumti is currently unhandeled"
 
 astSelbri :: (Monad m, Alternative m) => Selbri -> m AST
-astSelbri (Brivla (_,n,_) _) = (`Selbr` []) <$> lookupSelbri n
+astSelbri (Brivla (_,n,_) _)    = (`Selbr` []) <$> lookupSelbri n
 astSelbri (GOhA (_,"mo",_) _ _) = (`Selbr` []) <$> lookupSelbri "mo"
+astSelbri (SE (_,mod,_) _ s)    = (astSelbri s) >>= \a -> case a of
+  (Sel s args ses) -> return $ Sel s args ((modse mod):ses)
+  (Selbr s args)   -> return (Sel s args [modse mod])
+  _                -> fail "Error in SE, unsupported AST selbri"
+  where modse str = case str of {"se" -> Se; "Te" -> Te; "Xe" -> Xe;}
+
+    {-(astSelbri s) >>= \a -> case (a,mod) of
+  (Selbr s args, "se") -> case args of
+    (a:b:c)   -> return (Selbr s (b:a:(drop 2 c)))
+    errArgs   -> fail ("Error! selbri: " ++ show s ++ " does not have enough sumti arguments ( " ++ show errArgs ++ ")")
+  (Selbr s args, "te") -> case args of
+    (a:b:c:d)  -> return (Selbr s (c:b:a:(drop 3 d)))
+    _          -> fail ("Error! selbri: " ++ show s ++ " does not have enough sumti arguments")
+  (Selbr s args, "xe") -> case args of
+    _ -> undefined
+
+  _            -> fail "Unsupported SE" -}
   
 meksoSumti :: (Monad m, Alternative m) => Sumti -> m Mekso
 meksoSumti (LI _ _ m mc _) = mex m
@@ -342,3 +366,12 @@ evalSelbri :: (Monad m, Alternative m) => AST -> m
 evalSelbri = undefined
 
 -}
+
+applySe :: (Monad m) => AST -> m AST
+applySe (Sel a b [])    = return $ Selbr a b
+applySe (Sel a b (x:xs)) = case x of
+  Se -> applySe (Sel a ((take 1 (drop 1 b)) ++ (take 1 b) ++ (drop 2 b)) xs)
+  Te -> applySe (Sel a ((take 1 (drop 2 b)) ++ (take 1 (drop 1 b))
+                        ++ (take 1 b) ++ (drop 3 b)) xs)
+  _ -> undefined
+applySe other           = fail ("Error: no SE to apply in " ++ show other)
