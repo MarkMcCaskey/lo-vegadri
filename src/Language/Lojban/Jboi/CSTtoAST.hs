@@ -42,8 +42,12 @@ data AST
   | Selb !SelbriD
   | Sumt !SumtiD
   | Selbr !SelbriInfo ![SumtiD]
+  | Sel !SelbriInfo ![SumtiD] ![Se]
   | Seq ![AST]
   deriving (Show)
+
+data Se = Se | Te | Xe
+  deriving (Show, Eq)
 
 data ProSumtiMi
   = MI | DO | MIhO | MIhA | MAhA | DOhO | KO
@@ -65,8 +69,12 @@ data ProSumtiAssignable
   | FOhO  { _ref :: !(Maybe T.Text) } | FOhU { _ref :: !(Maybe T.Text) }
   deriving (Show, Eq)
 
+data ProSumtiQ
+  = MA 
+  deriving(Show,Eq)
+
 kohamap :: Map.Map T.Text ProSumti
-kohamap = Map.fromList (foldl1 (++) [assignable,mi,demonstrative,utterance,anaphoric])
+kohamap = Map.fromList (foldl1 (++) [assignable,mi,demonstrative,utterance,anaphoric,[("ma",M MA)]])
   where
     assignable =
       (zip ["fo'a","fo'e","fo'i","fo'o","fo'u",
@@ -92,7 +100,7 @@ data ProBridiAssignable
 data ProSumtiAnaphoric = RI | RA | RU
   deriving (Show, Eq)
 
-data ProBridiAnaphoric = GOhI | GOhA | GOhU | GOhE | GOhO | NEI | NOhA
+data ProBridiAnaphoric = GOhI | GOhAs | GOhU | GOhE | GOhO | NEI | NOhA
   deriving (Show, Eq)
 
 data ProSumti
@@ -101,6 +109,7 @@ data ProSumti
   | Psm  { _psm  :: !ProSumtiMi }
   | Psd  { _psd  :: !ProSumtiDemonstrative }
   | Psu  { _psu  :: !ProSumtiUtterance }
+  | M    { _m    :: !ProSumtiQ }
   deriving(Eq)
 
 instance Show ProSumti where
@@ -109,14 +118,19 @@ instance Show ProSumti where
   show (Psm a)  = show a
   show (Psd a)  = show a
   show (Psu a)  = show a
+  show (M a)    = show a
 
 
 data SumtiD
   = Quote {_content :: !T.Text}
   | Psa   {_psa     :: !ProSumti}
   | ZOhE 
-  deriving (Show, Eq)
-  
+  deriving (Eq)
+
+instance Show SumtiD where
+  show (Quote c) = show c
+  show (Psa   c) = show c
+  show (ZOhE)    = "zo'e"
 
 data SelbriD
   = S1 { _selbriName :: !T.Text
@@ -181,10 +195,18 @@ ast (IText_1 _ _ _ _ (Just p))   = ast p -- @@Ignore sentence start
 ast (TopText _ _ _ _ Nothing _)  = fail "Empty top level expression"
 ast (TopText _ _ _ _ (Just p) _) = ast p
 ast (Selbri b)                   = astSelbri b 
-ast (TermsBridiTail s _ _ t)     = Seq <$> liftM2 (:) (ast t) (sequence (fmap ((Sumt <$>) . astSumti) s)) 
+ast (TermsBridiTail s _ _ t)     = case ast t of
+  (Just (Selb v)) -> case (lookupSelbri (v^.selbriName.to T.unpack)) of
+    (Just si) -> Selbr si <$> (sequence (fmap astSumti s)) 
+    Nothing   -> fail "selbri unsupported"
+  (Just (Selbr v _))  -> Selbr v <$> (sequence (fmap astSumti s)) 
+  (Just (Sel v _ se)) -> (\b -> Sel v b se) <$> (sequence (fmap astSumti s))
+  x               -> fail ("invalid selbri in tbt: " ++ show x)
 ast (SelbriTailTerms s t _ _)    = case (astSelbri s) of
   Left err          -> fail err
-  Right (Selbr i _) -> (Selbr i) <$> (sequence (fmap astSumti t)) 
+  Right (Selbr i _)  -> (Selbr i) <$> (sequence (fmap astSumti t)) 
+  Right (Sel i _ se) -> (\b -> Sel i b se) <$> (sequence (fmap astSumti t))
+
 
   
 {-|
@@ -194,11 +216,14 @@ Note: remember that this needs to be sorted by keys, for linear
 insertion time (fromAscList)
 -}
 selbriMap :: Map.Map T.Text SelbriInfo
-selbriMap = Map.fromAscList
+selbriMap = Map.fromList
   [s "pendo" 2,
    s "prami" 2,
    s "nelci" 2,
-   s "dunli" 3]
+   s "dunli" 3,
+   s "prenu" 2,
+   s "mroka'e" 2,
+   s "mo"      3]
   where s n a = (n,SelbriInfo a n)
 
 lookupSelbri :: (Monad m, Alternative m) => String -> m SelbriInfo
@@ -218,7 +243,25 @@ astSumti (LOhU _ _ t _ _ _)   = return . Quote . T.pack . unwords $ t
 astSumti _ = fail "this type of sumti is currently unhandeled"
 
 astSelbri :: (Monad m, Alternative m) => Selbri -> m AST
-astSelbri (Brivla (_,n,_) _) = (`Selbr` []) <$> lookupSelbri n
+astSelbri (Brivla (_,n,_) _)    = (`Selbr` []) <$> lookupSelbri n
+astSelbri (GOhA (_,"mo",_) _ _) = (`Selbr` []) <$> lookupSelbri "mo"
+astSelbri (SE (_,mod,_) _ s)    = (astSelbri s) >>= \a -> case a of
+  (Sel s args ses) -> return $ Sel s args ((modse mod):ses)
+  (Selbr s args)   -> return (Sel s args [modse mod])
+  _                -> fail "Error in SE, unsupported AST selbri"
+  where modse str = case str of {"se" -> Se; "Te" -> Te; "Xe" -> Xe;}
+
+    {-(astSelbri s) >>= \a -> case (a,mod) of
+  (Selbr s args, "se") -> case args of
+    (a:b:c)   -> return (Selbr s (b:a:(drop 2 c)))
+    errArgs   -> fail ("Error! selbri: " ++ show s ++ " does not have enough sumti arguments ( " ++ show errArgs ++ ")")
+  (Selbr s args, "te") -> case args of
+    (a:b:c:d)  -> return (Selbr s (c:b:a:(drop 3 d)))
+    _          -> fail ("Error! selbri: " ++ show s ++ " does not have enough sumti arguments")
+  (Selbr s args, "xe") -> case args of
+    _ -> undefined
+
+  _            -> fail "Unsupported SE" -}
   
 meksoSumti :: (Monad m, Alternative m) => Sumti -> m Mekso
 meksoSumti (LI _ _ m mc _) = mex m
@@ -323,3 +366,12 @@ evalSelbri :: (Monad m, Alternative m) => AST -> m
 evalSelbri = undefined
 
 -}
+
+applySe :: (Monad m) => AST -> m AST
+applySe (Sel a b [])    = return $ Selbr a b
+applySe (Sel a b (x:xs)) = case x of
+  Se -> applySe (Sel a ((take 1 (drop 1 b)) ++ (take 1 b) ++ (drop 2 b)) xs)
+  Te -> applySe (Sel a ((take 1 (drop 2 b)) ++ (take 1 (drop 1 b))
+                        ++ (take 1 b) ++ (drop 3 b)) xs)
+  _ -> undefined
+applySe other           = fail ("Error: no SE to apply in " ++ show other)

@@ -1,21 +1,20 @@
-name:                lenjo
+name:                lo-vegadri
 version:             0.0.1.0
 synopsis:            Semantic Lojban "standardization" attempt and implementation
 description:         Please see README.md
-homepage:            https://github.com/MarkMcCaskey/lenjo
+homepage:            https://github.com/MarkMcCaskey/lo-vegadri
 license:             BSD3
-license-file:        LICENSE
+license-file:        LICENSE/BSD3
 author:              Mark McCaskey
 maintainer:          mmccask2@gmu.edu
 copyright:           2016 Mark McCaskey
-category:            Web
+category:            Language
 build-type:          Simple
--- extra-source-files:
 cabal-version:       >=1.10
  
 library
   hs-source-dirs:      src, src/Language/Lojban/Jboi
-  exposed-modules:     Lib, Language.Lojban.Jboi.CSTtoAST, Language.Lojban.Jboi.Mekso, Language.Lojban.Jboi.Constant
+  exposed-modules:     Lib, Language.Lojban.Jboi.CSTtoAST, Language.Lojban.Jboi.Mekso, Language.Lojban.Jboi.Constant, Language.Lojban.Jboi.DB
   build-depends:       array
                      , base >= 4.7 && < 5
                      , lojbanParser
@@ -34,17 +33,18 @@ library
                      , datalog
   build-tools:
   default-language:    Haskell2010
-  ghc-options:         -Wall -O2 -optc-O3
+  ghc-options:         -Wall 
 
 executable jboi
   hs-source-dirs:      app/jboi
   main-is:             Main.hs
+  other-modules:       Repl
   ghc-options:         -Wall -O2 -optc-O3 -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
                      , simple
                      , text
                      , mtl
-                     , lenjo
+                     , lo-vegadri
                      , repline
                      , haskeline
                      , optparse-applicative
@@ -52,6 +52,10 @@ executable jboi
                      , datalog
                      , include-file
                      , bytestring
+                     , dictionaries
+                     , directory
+                     , bytestring-trie
+                     , containers
 
   default-language:    Haskell2010
 
@@ -65,7 +69,7 @@ test-suite stack-integration-test
   hs-source-dirs:      test/integration
   main-is:             IntegrationSpec.hs
   build-depends:       base
-                     , lenjo
+                     , lo-vegadri
                      , hspec
                      , QuickCheck
                      , smallcheck
@@ -79,7 +83,7 @@ test-suite simple-test
   build-depends:       base
                      , simple
                      , lojbanParser
-                     , lenjo
+                     , lo-vegadri 
                      , hspec
                      , QuickCheck 
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N -Wall -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -O2 -optc-O3
@@ -91,11 +95,11 @@ benchmark eval-mekso
   main-is:          MainBenchmarkSuite.hs
   build-depends:    base
                   , criterion
-                  , lenjo
+                  , lo-vegadri 
                   , lojbanParser
-  ghc-options:      -threaded -rtsopts -with-rtsopts=-N -Wall -O2 -optc-O3
+  ghc-options:    -Wall -O2 -optc-O3 -rtsopts -with-rtsopts=-A10m
   default-language: Haskell2010
 
 source-repository head
   type:     git
-  location: https://github.com/MarkMcCaskey/lenjo
+  location: https://github.com/MarkMcCaskey/lo-vegadri

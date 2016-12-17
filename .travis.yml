@@ -1,6 +1,9 @@
 language: c
 sudo: true
 
+git:
+    submodules: false
+
 cache:
     directories:
         - $HOME/.ghc
@@ -31,5 +34,5 @@ install:
 
 script:
  - set -e
- - stack --no-terminal test --haddock --no-haddock-deps 
+ - stack --no-terminal test lo-vegadri --haddock --no-haddock-deps 
 

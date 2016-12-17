@@ -348,14 +348,8 @@
 *** TODO Sets
 *** TODO Masses
 *** TODO Individuals?
-    - Note taken on [2016-11-01 火 14:43] \\
-      Is this actually a thing?
-      
 * TODO Mekso
-** TODO Introduction
-   - Note taken on [2016-11-01 火 16:14] \\
-     Look this up and fix this
-   Mekso is the Lojban word for "math" or "mathematical expressions"
+   Mekso is the Lojban word for "mathematical expressions"
    This section covers everything from numbers to expressions.
 ** TODO Types
 *** TODO Numbers
@@ -443,7 +437,7 @@
     of \emph{lenjo}, term rewriting/expression manipulation allows for
     algebraic problem solving.
     
-    Term rewriting is not described/implemented in V0.1 of the
+    Term rewriting is not described/implemented in V0.0.1.0 of the
     standard.
     
     However, mekso can queryed and manipulated in the same way that

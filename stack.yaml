@@ -39,6 +39,7 @@ packages:
 - '.'
 - './src/lojbanParser-0.1.9.2'
 - './src/Datalog'
+- './src/dictionaries'
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 extra-deps:
@@ -46,6 +47,7 @@ extra-deps:
 - numeric-prelude-0.4.2
 - non-negative-0.1.1
 - datalog-0.2.0.2
+- dictionaries-0.1.0.0
 
 # Override default flag values for local packages and extra-deps
 flags: {}
