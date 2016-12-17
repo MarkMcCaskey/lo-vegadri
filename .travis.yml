@@ -1,6 +1,9 @@
 language: c
 sudo: true
 
+git:
+    submodules: false
+
 cache:
     directories:
         - $HOME/.ghc
